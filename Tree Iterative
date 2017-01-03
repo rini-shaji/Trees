@@ -1,0 +1,159 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package treeimplementation;
+import java.util.*;
+/**
+ *
+ * @author Rini
+ */
+public class TreeImplementation {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        // TODO code application logic here
+        MyTree t= new MyTree();
+        t.insert(40);
+        t.insert(20);
+        t.insert(10);
+        t.insert(30);
+        t.insert(60);
+        t.insert(50);
+        t.insert(70);
+        t.inOrderPrint();
+        t.preOrderPrint();
+        t.postOrderPrint();
+        if (t.contains(10)){
+            System.out.println("Tree contins 10");
+        }else{
+        System.out.println("Tree does not contain 10");
+        }
+    }
+    
+    public static class Node{
+    int data;
+    Node left, right;
+    
+    public Node(int data){
+    this.data=data;
+    }
+    }
+    
+    public static class MyTree{
+    private Node root;
+    
+    public void insert(int value){    
+    if (root==null){
+        root=new Node(value);
+        return;
+    }
+    Node current=root;
+    while(true){
+        if (value<=current.data){
+            if(current.left==null){
+                current.left=new Node (value);
+                return;
+            }else{
+                current=current.left;
+            }
+        }else{
+            if (current.right==null){
+                current.right=new Node(value);
+                return;
+            }else{
+                current=current.right;
+            }
+        }
+    }
+    }
+    
+    public boolean contains(int value){
+        Node current=root;
+        while (current!=null){
+        if (value==current.data){
+            return true;
+        }
+        else{
+            if (value<current.data){
+                current=current.left;
+            }else{
+                current=current.right;
+            }            
+        }
+        }
+        return false;
+    }
+     
+    public void inOrderPrint(){  
+        System.out.println("Printing inorder: ");
+        if (root==null){return;}
+        Stack<Node> s=new Stack<Node>();
+        Node current= root;
+        while(!s.empty()||current!=null){
+        if(current!=null){
+            s.push(current);
+            current=current.left;
+        }else{
+            Node n=s.pop();
+            System.out.println(n.data);
+            current=n.right;
+        }
+        }
+        
+    }
+    
+    public void preOrderPrint(){
+    System.out.println("Printing preorder: ");
+    if(root==null){return;}
+    Stack <Node> s=new Stack<Node>();
+    Node current=root;
+    s.push(current);
+    while(!s.empty()){
+    Node n=s.pop();
+    System.out.println(n.data);
+    
+    if(n.right!=null){
+    s.push(n.right);
+    
+    if (n.left!=null){
+        s.push(n.left);
+    }
+    }
+    }
+    }
+    
+    public void postOrderPrint(){
+    System.out.println("Printing postorder: ");
+    if (root==null){return;}
+    Stack<Node> s = new Stack<Node>();
+    Node current = root;
+    while (true){
+            if (current!=null){
+                if (current.right!=null){
+                s.push(current.right);
+                }
+                s.push(current);
+                current=current.left;
+                continue;
+            }
+            if (s.empty()){
+            return;
+            }
+            current=s.pop();
+            
+            if (current.right!=null && !s.isEmpty() && current.right==s.peek()){
+            s.pop();
+            s.push(current);
+            current=current.right;
+            }else{
+                System.out.println (current.data);
+                current=null;
+            }
+        }
+    }
+    }
+}
